@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "211470771509",
+    "firebase_url": "https://classroom-2f3f0.firebaseio.com",
+    "project_id": "classroom-2f3f0",
+    "storage_bucket": "classroom-2f3f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211470771509:android:0913ef3ae44b6d9c",
+        "android_client_info": {
+          "package_name": "com.etti.classroomsbooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211470771509-j552jd2g1mj74jqfkgo5t2trcmk2prgm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.etti.classroomsbooking",
+            "certificate_hash": "28720e4f567442c94edf623a34f13ac93413600a"
+          }
+        },
+        {
+          "client_id": "211470771509-eermntfmcbcr769h02hvdl4988vmcb8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVfWCsr1ivkgY2BIfiBqdqnEzSwcOGWMA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211470771509-eermntfmcbcr769h02hvdl4988vmcb8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
