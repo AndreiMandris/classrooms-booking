@@ -1,0 +1,11 @@
+Each activity is made of 2 files: 
+- Java class (Logic)
+- XML file (UI)
+
+Each activity corresponds to a screen.
+ex: my profile, about page etc
+
+AndroidManifest file says which is the default activity to start with then the app is launched.
+
+ClassroomsBooking
+classroomsbooking.etti.com

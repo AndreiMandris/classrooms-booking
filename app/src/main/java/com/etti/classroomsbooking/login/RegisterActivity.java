@@ -1,4 +1,4 @@
-package com.etti.classroomsbooking;
+package com.etti.classroomsbooking.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.etti.classroomsbooking.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{

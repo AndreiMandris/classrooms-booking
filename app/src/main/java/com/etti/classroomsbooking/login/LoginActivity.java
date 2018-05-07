@@ -1,4 +1,4 @@
-package com.etti.classroomsbooking;
+package com.etti.classroomsbooking.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.etti.classroomsbooking.MainActivity;
+import com.etti.classroomsbooking.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
@@ -53,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void userLogin() {
+     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
@@ -75,6 +77,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (task.isSuccessful()){
                 finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            } else {
+                Toast.makeText(this, "Failed loging in.", Toast.LENGTH_SHORT).show();
             }
         });
     }
