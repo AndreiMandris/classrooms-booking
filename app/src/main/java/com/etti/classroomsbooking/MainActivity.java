@@ -1,6 +1,6 @@
 package com.etti.classroomsbooking;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -66,6 +66,13 @@ public class MainActivity extends AppCompatActivity{
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void moveToFragment(Fragment fragment){
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, fragment, fragment.getTag())
+                .addToBackStack(fragment.getTag())
+                .commit();
     }
 
     @Override

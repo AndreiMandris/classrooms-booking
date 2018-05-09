@@ -14,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.etti.classroomsbooking.EventsActivity;
+import com.etti.classroomsbooking.MainActivity;
 import com.etti.classroomsbooking.R;
 import com.etti.classroomsbooking.model.Classroom;
 
@@ -66,12 +67,9 @@ public class ClassroomsFragment extends Fragment {
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             Bundle args = getArguments();
             args.putString(ROOM, parent.getItemAtPosition(position).toString());
-            Fragment fragment = new ClassroomsFragment();
-            fragment.setArguments(args);
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, new EventsFragment(), new EventsFragment().getTag())
-                    .addToBackStack(null)
-                    .commit();
+            Fragment eventsFragment = new EventsFragment();
+            eventsFragment.setArguments(args);
+            ((MainActivity) getActivity()).moveToFragment(eventsFragment);
         });
         return view;
     }

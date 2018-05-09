@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 
 import com.etti.classroomsbooking.ClassroomsActivity;
+import com.etti.classroomsbooking.MainActivity;
 import com.etti.classroomsbooking.R;
 
 import java.util.Calendar;
@@ -58,18 +59,15 @@ public class CalendarFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         datePicker = (DatePicker) view.findViewById(R.id.calendarDatePicker);
-        datePicker.setMinDate(System.currentTimeMillis());
+        datePicker.setMinDate(System.currentTimeMillis() - 10000);
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(v -> {
             Bundle args = new Bundle();
             dateInMillis = getDateInstance(datePicker).getTimeInMillis();
             args.putLong(DATE_IN_MILLIS, dateInMillis);
-            Fragment fragment = new CalendarFragment();
-            fragment.setArguments(args);
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, new ClassroomsFragment(), new ClassroomsFragment().getTag())
-                    .addToBackStack(null)
-                    .commit();
+            Fragment classroomsFragment = new ClassroomsFragment();
+            classroomsFragment.setArguments(args);
+            ((MainActivity) getActivity()).moveToFragment(classroomsFragment);
         });
 
         return view;
