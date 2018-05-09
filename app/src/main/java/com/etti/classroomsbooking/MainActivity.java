@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.etti.classroomsbooking.fragments.CalendarFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity{
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
+
+        ListView listView = (ListView) findViewById()
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.etti.classroomsbooking.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 public class TimeLapse {
     public BigDecimal id;
@@ -22,4 +23,6 @@ public class TimeLapse {
     public BigDecimal getId() {
         return id;
     }
+
+    
 }
