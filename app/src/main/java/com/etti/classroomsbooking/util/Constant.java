@@ -10,6 +10,8 @@ import java.util.List;
 public class Constant {
     public static final String DATE_IN_MILLIS = "DATE_IN_MILLIS";
     public static final String ROOM = "ROOM";
+    public static final String USER = "USER";
+    public static final String TIME_INTERVAL = "TIME_INTERVAL";
 
     static {
         HashMap<Integer, Classroom> classrooms = new HashMap<>();

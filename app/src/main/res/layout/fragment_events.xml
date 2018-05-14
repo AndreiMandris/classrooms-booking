@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.EventsFragment">
 
-
     <ListView
         android:id="@+id/list_events"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
+        android:layout_height="445dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="67dp" />
+        android:layout_marginTop="75dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/list_events"
+        android:layout_marginEnd="25dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add" />
 </RelativeLayout>

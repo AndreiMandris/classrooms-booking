@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.etti.classroomsbooking.MainActivity;
 import com.etti.classroomsbooking.R;
 
 import java.util.HashMap;
@@ -41,8 +42,8 @@ public class EventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events, container, false);
-        ListView eventsListView = (ListView) view.findViewById(R.id.list_events);
-        HashMap<String, String> events = new HashMap<>();
+        ListView listView = view.findViewById(R.id.list_events);
+        ((MainActivity) getActivity()).buildListView(listView);
 
         return view;
     }

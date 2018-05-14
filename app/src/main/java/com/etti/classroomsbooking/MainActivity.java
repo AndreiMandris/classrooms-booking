@@ -17,10 +17,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.etti.classroomsbooking.fragments.CalendarFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static com.etti.classroomsbooking.util.Constant.TIME_INTERVAL;
+import static com.etti.classroomsbooking.util.Constant.USER;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -57,8 +67,27 @@ public class MainActivity extends AppCompatActivity{
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
+    }
 
-        ListView listView = (ListView) findViewById()
+    public void buildListView(ListView listView){
+        Map<String, String> eventsDetails = new HashMap<>();
+        eventsDetails.put("09:00 - 10:00", "andrei.mandris@gmail.com");
+        eventsDetails.put("10:00 - 10:30", "andrei.mandris@gmail.com");
+        eventsDetails.put("11:00 - 12:00", "andrei.mandris@gmail.com");
+        eventsDetails.put("14:00 - 14:30", "andrei.mandris@gmail.com");
+
+        List<Map<String,String>> listItems = new ArrayList<>();
+        SimpleAdapter adapter = new SimpleAdapter(this, listItems, R.layout.event_item,
+                new String[]{TIME_INTERVAL, USER}, new int[]{R.id.textView1, R.id.textView2});
+        Iterator iterator = eventsDetails.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
+            Map<String, String> pair = new HashMap<>();
+            pair.put(TIME_INTERVAL, entry.getKey());
+            pair.put(USER, entry.getValue());
+            listItems.add(pair);
+        }
+        listView.setAdapter(adapter);
     }
 
     @Override
