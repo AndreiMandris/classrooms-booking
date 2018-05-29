@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".login.LoginActivity">
             <intent-filter>
@@ -21,9 +20,6 @@
         <activity android:name=".MainActivity">
             icon
         </activity>
-        <activity android:name=".CalendarActivity" />
-        <activity android:name=".ClassroomsActivity" />
-        <activity android:name=".EventsActivity"></activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>

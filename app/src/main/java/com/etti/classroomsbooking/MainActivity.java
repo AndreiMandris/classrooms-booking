@@ -1,5 +1,6 @@
 package com.etti.classroomsbooking;
 
+import android.app.TimePickerDialog;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,30 +14,51 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseBooleanArray;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.etti.classroomsbooking.fragments.CalendarFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
+import com.etti.classroomsbooking.model.Classroom;
+import com.etti.classroomsbooking.model.TimeLapse;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.etti.classroomsbooking.util.Constant.EVENT_CHECK_BOX;
 import static com.etti.classroomsbooking.util.Constant.TIME_INTERVAL;
 import static com.etti.classroomsbooking.util.Constant.USER;
+import static com.etti.classroomsbooking.util.Constant.formatTime;
+import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMillis;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private Button buttonLogout;
     private FirebaseAuth firebaseAuth;
     private DrawerLayout drawer;
+    SimpleAdapter adapter;
+
+    private List<Classroom> classrooms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,29 +87,64 @@ public class MainActivity extends AppCompatActivity{
                     finish(); break;
             }
             drawer.closeDrawer(GravityCompat.START);
+
+
             return true;
         });
+
+        classrooms = new ArrayList<>();
+        classrooms.add(new Classroom(0, "A01"));
+        classrooms.add(new Classroom(1, "A02"));
+        classrooms.add(new Classroom(2, "A03"));
+        classrooms.add(new Classroom(3, "B01"));
+        classrooms.add(new Classroom(4, "B02"));
+        classrooms.add(new Classroom(5, "B03"));
     }
 
-    public void buildListView(ListView listView){
-        Map<String, String> eventsDetails = new HashMap<>();
-        eventsDetails.put("09:00 - 10:00", "andrei.mandris@gmail.com");
-        eventsDetails.put("10:00 - 10:30", "andrei.mandris@gmail.com");
-        eventsDetails.put("11:00 - 12:00", "andrei.mandris@gmail.com");
-        eventsDetails.put("14:00 - 14:30", "andrei.mandris@gmail.com");
+    public List<Classroom> getClassrooms() {
+        return this.classrooms;
+    }
 
+    public void setClassrooms(List<Classroom> classrooms) {
+        this.classrooms = classrooms;
+    }
+
+    public void buildEventsListView(ListView listView, Classroom classroom, long selectedDateInMillis){
+        ArrayList<TimeLapse> classroomIntervals = classroom.getIntervals();
+        if (classroomIntervals == null){
+            return;
+        }
+        classroom.sortIntervals();
+        Map<String, String> eventsDetails = new LinkedHashMap<>();
+        for (TimeLapse interval : classroomIntervals){
+
+            if (getStringDateFromTimeMillis(selectedDateInMillis).equals(interval.getDate())) {
+                double startTime = interval.getStartTime();
+                double endTime = interval.getEndTime();
+                String startTimeFormatted = formatTime((int) startTime) + ":" + (startTime % 1 == 0.0 ? "00" : "30");
+                String endTimeFormatted = formatTime((int) endTime) + ":" + (endTime % 1 == 0.0 ? "00" : "30");
+                String timeInterval = "" + startTimeFormatted + " - " + endTimeFormatted;
+                eventsDetails.put(timeInterval, interval.getUserName());
+            }
+        }
         List<Map<String,String>> listItems = new ArrayList<>();
-        SimpleAdapter adapter = new SimpleAdapter(this, listItems, R.layout.event_item,
-                new String[]{TIME_INTERVAL, USER}, new int[]{R.id.textView1, R.id.textView2});
+        adapter = new SimpleAdapter(this, listItems, R.layout.event_item,
+                new String[]{TIME_INTERVAL, USER, "CHECKBOX"}, new int[]{R.id.textView1, R.id.textView2, R.id.eventCheckBox});
         Iterator iterator = eventsDetails.entrySet().iterator();
+
         while(iterator.hasNext()){
             Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
             Map<String, String> pair = new HashMap<>();
             pair.put(TIME_INTERVAL, entry.getKey());
             pair.put(USER, entry.getValue());
+            pair.put(USER, entry.getValue());
             listItems.add(pair);
         }
         listView.setAdapter(adapter);
+    }
+
+    public void notifyAdapter(){
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -116,4 +173,5 @@ public class MainActivity extends AppCompatActivity{
         }
         super.onBackPressed();
     }
+
 }
