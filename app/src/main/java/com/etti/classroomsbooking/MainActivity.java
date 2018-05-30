@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.etti.classroomsbooking.fragments.CalendarFragment;
+import com.etti.classroomsbooking.fragments.EventsFragment;
+import com.etti.classroomsbooking.fragments.ScannedRoomFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
 import com.etti.classroomsbooking.model.Classroom;
 import com.etti.classroomsbooking.model.TimeLapse;
@@ -35,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.Result;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -45,20 +48,33 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
 import static com.etti.classroomsbooking.util.Constant.EVENT_CHECK_BOX;
+import static com.etti.classroomsbooking.util.Constant.REQUEST_CODE_QR;
 import static com.etti.classroomsbooking.util.Constant.TIME_INTERVAL;
 import static com.etti.classroomsbooking.util.Constant.USER;
 import static com.etti.classroomsbooking.util.Constant.formatTime;
 import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMillis;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
     private Button buttonLogout;
     private FirebaseAuth firebaseAuth;
     private DrawerLayout drawer;
     SimpleAdapter adapter;
 
+
     private List<Classroom> classrooms;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode != RESULT_CANCELED && data != null) {
+            if (requestCode == REQUEST_CODE_QR) {
+                moveToFragment(new ScannedRoomFragment());
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu2);
 
+        classrooms = new ArrayList<>();
+        classrooms.add(new Classroom(0, "A01"));
+        classrooms.add(new Classroom(1, "A02"));
+        classrooms.add(new Classroom(2, "A03"));
+        classrooms.add(new Classroom(3, "B01"));
+        classrooms.add(new Classroom(4, "B02"));
+        classrooms.add(new Classroom(5, "B03"));
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         getSupportFragmentManager().beginTransaction()
@@ -85,20 +108,14 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish(); break;
+                case (R.id.scan_qr):
+                    Intent i = new Intent(this, ScanQRActivity.class);
+                    //startActivity(new Intent(getApplicationContext(), ScanQRActivity.class));
+                    startActivityForResult(i, REQUEST_CODE_QR);
             }
             drawer.closeDrawer(GravityCompat.START);
-
-
             return true;
         });
-
-        classrooms = new ArrayList<>();
-        classrooms.add(new Classroom(0, "A01"));
-        classrooms.add(new Classroom(1, "A02"));
-        classrooms.add(new Classroom(2, "A03"));
-        classrooms.add(new Classroom(3, "B01"));
-        classrooms.add(new Classroom(4, "B02"));
-        classrooms.add(new Classroom(5, "B03"));
     }
 
     public List<Classroom> getClassrooms() {
@@ -174,4 +191,8 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public void handleResult(Result result) {
+
+    }
 }

@@ -15,6 +15,7 @@ public class Constant {
     public static final String USER = "USER";
     public static final String EVENT_CHECK_BOX = "EVENT_CHECK_BOX";
     public static final String TIME_INTERVAL = "TIME_INTERVAL";
+    public static final int REQUEST_CODE_QR = 2984;
 
     static {
         HashMap<Integer, Classroom> classrooms = new HashMap<>();
