@@ -1,5 +1,6 @@
 package com.etti.classroomsbooking;
 
+import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.util.SparseBooleanArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -31,6 +33,7 @@ import com.etti.classroomsbooking.fragments.ScannedRoomFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
 import com.etti.classroomsbooking.model.Classroom;
 import com.etti.classroomsbooking.model.TimeLapse;
+import com.etti.classroomsbooking.util.Constant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,17 +66,26 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     private FirebaseAuth firebaseAuth;
     private DrawerLayout drawer;
     SimpleAdapter adapter;
-
+    private boolean mReturningWithResult = false;
+    private TextView navHeaderTitle;
 
     private List<Classroom> classrooms;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != RESULT_CANCELED && data != null) {
+        super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == REQUEST_CODE_QR) {
-                moveToFragment(new ScannedRoomFragment());
+                mReturningWithResult = true;
             }
         }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (mReturningWithResult) {
+            moveToFragment(new ScannedRoomFragment());
+        }
+        mReturningWithResult = false;
     }
 
     @Override
@@ -86,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu2);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         classrooms = new ArrayList<>();
         classrooms.add(new Classroom(0, "A01"));
@@ -110,12 +123,16 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     finish(); break;
                 case (R.id.scan_qr):
                     Intent i = new Intent(this, ScanQRActivity.class);
-                    //startActivity(new Intent(getApplicationContext(), ScanQRActivity.class));
-                    startActivityForResult(i, REQUEST_CODE_QR);
+                    startActivityForResult(i, REQUEST_CODE_QR); break;
+                case (R.id.view_calendar):
+                    moveToFragment(new CalendarFragment());
             }
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
+        View header = navigationView.getHeaderView(0);
+        navHeaderTitle = header.findViewById(R.id.nav_header_title);
+        navHeaderTitle.setText("Welcome, \n" + firebaseAuth.getCurrentUser().getEmail());
     }
 
     public List<Classroom> getClassrooms() {
@@ -157,6 +174,15 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             pair.put(USER, entry.getValue());
             listItems.add(pair);
         }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Constant.checkedEventsList.set(position, true);
+                ViewGroup row = (ViewGroup) listView.getChildAt(position);
+                CheckBox checkBox = row.findViewById(R.id.eventCheckBox);
+                checkBox.setChecked(true);
+            }
+        });
         listView.setAdapter(adapter);
     }
 

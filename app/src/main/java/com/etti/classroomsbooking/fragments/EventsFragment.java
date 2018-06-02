@@ -1,6 +1,7 @@
 package com.etti.classroomsbooking.fragments;
 
 import com.etti.classroomsbooking.model.TimeLapse;
+import com.etti.classroomsbooking.util.Constant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -92,7 +93,6 @@ public class EventsFragment extends Fragment {
 
         addEventButton.setOnClickListener(v -> {
             displayStartTimePicker(selectedClassroom, listView);
-            //((MainActivity) getActivity()).notifyAdapter();
         });
         dateInMillis = getArguments().getLong(DATE_IN_MILLIS);
 
@@ -125,19 +125,26 @@ public class EventsFragment extends Fragment {
         return view;
     }
 
-    public void hideCheckBoxes(ListView listView){
-        if(listView.getChildCount() != 0) {
-            int count = listView.getCount();
-            for (int i = 0; i < count; ++i) {
-                ViewGroup row = (ViewGroup) listView.getChildAt(i);
-                CheckBox checkBox = row.findViewById(R.id.eventCheckBox);
-                TextView userEmail = row.findViewById(R.id.textView2);
-                if (!userEmail.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
-                    checkBox.setVisibility(View.INVISIBLE);
-                }
-            }
-        }
-    }
+//    public void tickCheckBoxes(ListView listView){
+//        for (int i = 0; i < 5; ++i){
+//            ViewGroup row = (ViewGroup) listView.getChildAt(i);
+//            CheckBox checkBox = row.findViewById(R.id.eventCheckBox);
+//            //checkBox.setChecked(Constant.checkedEventsList.get(i - 1));
+//        }
+//    }
+//    public void hideCheckBoxes(ListView listView){
+//        if(listView.getChildCount() != 0) {
+//            int count = listView.getCount();
+//            for (int i = 0; i < count; ++i) {
+//                ViewGroup row = (ViewGroup) listView.getChildAt(i);
+//                CheckBox checkBox = row.findViewById(R.id.eventCheckBox);
+//                TextView userEmail = row.findViewById(R.id.textView2);
+//                if (!userEmail.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+//                    checkBox.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        }
+//    }
 
     public void displayStartTimePicker(final Classroom classroom, ListView listView){
         String selectedDate = getStringDateFromTimeMillis(dateInMillis);

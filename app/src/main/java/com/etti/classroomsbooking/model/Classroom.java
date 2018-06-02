@@ -82,7 +82,7 @@ public class Classroom implements Serializable{
         boolean[] disabledHours = new boolean[48];
         for (TimeLapse interval : this.getIntervals()) {
             if (interval.getDate().equals(selectedDate)) {
-                for (double i = 0; i < 24; i += 0.5) {
+                for (double i = 0; i <= 24; i += 0.5) {
                     if (i > interval.getStartTime() && interval.getStartTime() > startPickedTime) {
                         disabledHours[(int) (i * 2)] = true;
                     }
