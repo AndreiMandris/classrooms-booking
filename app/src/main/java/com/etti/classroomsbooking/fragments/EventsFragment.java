@@ -76,6 +76,7 @@ public class EventsFragment extends Fragment {
         FloatingActionButton addEventButton = view.findViewById(R.id.floatingActionButton2);
 
         Bundle args = getArguments();
+        dateInMillis = getArguments().getLong(DATE_IN_MILLIS);
         int position = args.getInt(ROOM_POSITION);
         long selectedDateInMillis = args.getLong(DATE_IN_MILLIS);
         mainActivity = (MainActivity) getActivity();
@@ -84,7 +85,9 @@ public class EventsFragment extends Fragment {
         //hideCheckBoxes(listView);
 
         TextView classroomNametextView = view.findViewById(R.id.classroomNameView);
+        TextView dateOfEvents = view.findViewById(R.id.dateOfEvents);
         classroomNametextView.setText("Classroom " + selectedClassroom.getName());
+        dateOfEvents.setText(getStringDateFromTimeMillis(dateInMillis));
         db = FirebaseDatabase.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         classroomsRef = db.getReference("rooms");
@@ -94,7 +97,6 @@ public class EventsFragment extends Fragment {
         addEventButton.setOnClickListener(v -> {
             displayStartTimePicker(selectedClassroom, listView);
         });
-        dateInMillis = getArguments().getLong(DATE_IN_MILLIS);
 
         Button cancelMeetingsButton = view.findViewById(R.id.cancelMeetings);
         if (cancelMeetingsButton != null) {

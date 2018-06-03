@@ -37,12 +37,21 @@
 
     <TextView
         android:id="@+id/classroomNameView"
-        android:layout_width="276dp"
+        android:layout_width="231dp"
         android:layout_height="37dp"
         android:layout_above="@+id/list_events"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="-89dp"
         android:layout_marginStart="11dp"
-        android:textSize="25dp"
+        android:text="TextView"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/dateOfEvents"
+        android:layout_width="91dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/classroomNameView"
+        android:layout_marginEnd="15dp"
         android:text="TextView" />
 </RelativeLayout>

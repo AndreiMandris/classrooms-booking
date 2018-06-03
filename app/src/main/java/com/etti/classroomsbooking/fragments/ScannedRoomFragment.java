@@ -72,9 +72,11 @@ public class ScannedRoomFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        dateInMillis = System.currentTimeMillis();
         View view = inflater.inflate(R.layout.fragment_events, container, false);
         ListView listView = view.findViewById(R.id.list_events);
         TextView classroomNametextView = view.findViewById(R.id.classroomNameView);
+        TextView dateOfEvents = view.findViewById(R.id.dateOfEvents);
         FloatingActionButton addEventButton = view.findViewById(R.id.floatingActionButton2);
         Button cancelMeetingsButton = view.findViewById(R.id.cancelMeetings);
 
@@ -85,6 +87,7 @@ public class ScannedRoomFragment extends Fragment {
         //hideCheckBoxes(listView);
 
         classroomNametextView.setText("Classroom " + selectedClassroom.getName());
+        dateOfEvents.setText(getStringDateFromTimeMillis(dateInMillis));
         db = FirebaseDatabase.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         classroomsRef = db.getReference("rooms");
@@ -95,33 +98,32 @@ public class ScannedRoomFragment extends Fragment {
             displayStartTimePicker(selectedClassroom, listView);
             //((MainActivity) getActivity()).notifyAdapter();
         });
-        dateInMillis = System.currentTimeMillis();
 
-//        if (cancelMeetingsButton != null) {
-//            cancelMeetingsButton.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    int count = listView.getCount();
-//                    ArrayList<TimeLapse> intervalsFromSpecifiedDate = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
-//                    ArrayList<TimeLapse> otherIntervals = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> !interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
-//                    for(int i=0; i<count; ++i) {
-//                        ViewGroup row = (ViewGroup) listView.getChildAt(i);
-//                        CheckBox check = row.findViewById(R.id.eventCheckBox);
-//                        if (check.isChecked()) {
-//                            intervalsFromSpecifiedDate.set(i, null);
-//                        }
-//                    }
-//                    intervalsFromSpecifiedDate.removeAll(Collections.singleton(null));
-//                    for (TimeLapse timeLapse : otherIntervals){
-//                        intervalsFromSpecifiedDate.add(timeLapse);
-//                    }
-//                    selectedClassroom.setIntervals(intervalsFromSpecifiedDate);
-//                    saveBookingToDB(selectedClassroom);
-//                    mainActivity.buildEventsListView(listView, selectedClassroom, dateInMillis);
-//                }
-//            });
-//        }
+        if (cancelMeetingsButton != null) {
+            cancelMeetingsButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    int count = listView.getCount();
+                    ArrayList<TimeLapse> intervalsFromSpecifiedDate = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
+                    ArrayList<TimeLapse> otherIntervals = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> !interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
+                    for(int i=0; i<count; ++i) {
+                        ViewGroup row = (ViewGroup) listView.getChildAt(i);
+                        CheckBox check = row.findViewById(R.id.eventCheckBox);
+                        if (check.isChecked()) {
+                            intervalsFromSpecifiedDate.set(i, null);
+                        }
+                    }
+                    intervalsFromSpecifiedDate.removeAll(Collections.singleton(null));
+                    for (TimeLapse timeLapse : otherIntervals){
+                        intervalsFromSpecifiedDate.add(timeLapse);
+                    }
+                    selectedClassroom.setIntervals(intervalsFromSpecifiedDate);
+                    saveBookingToDB(selectedClassroom);
+                    mainActivity.buildEventsListView(listView, selectedClassroom, dateInMillis);
+                }
+            });
+        }
         return view;
     }
 

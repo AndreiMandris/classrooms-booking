@@ -33,7 +33,7 @@ public class Constant {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH) + 1;
         int year = calendar.get(Calendar.YEAR);
-        String date = "" + day + "-" + month + "-" + year;
+        String date = "" + formatTime(day) + "-" + formatTime(month) + "-" + year;
         return date;
     }
 
