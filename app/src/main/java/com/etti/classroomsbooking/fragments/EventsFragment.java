@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 import static com.etti.classroomsbooking.util.Constant.DATE_IN_MILLIS;
 import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
-import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMillis;
+import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
 
 /**
@@ -48,6 +48,7 @@ import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMill
  */
 public class EventsFragment extends Fragment {
 
+    private static final String TAG = EventsFragment.class.getSimpleName();
     Long dateInMillis;
     DatabaseReference rootRef;
     DatabaseReference classroomsRef;
@@ -98,7 +99,7 @@ public class EventsFragment extends Fragment {
             displayStartTimePicker(selectedClassroom, listView);
         });
 
-        Button cancelMeetingsButton = view.findViewById(R.id.cancelMeetings);
+        FloatingActionButton cancelMeetingsButton = view.findViewById(R.id.cancelSelectedMeetings);
         if (cancelMeetingsButton != null) {
                     cancelMeetingsButton.setOnClickListener(new View.OnClickListener() {
 
@@ -210,5 +211,9 @@ public class EventsFragment extends Fragment {
     private double getComposedHour(int hourOfDay, int minute) {
         double minutes = minute == 0 ? 0 : 0.5;
         return hourOfDay + minutes;
+    }
+
+    public static String getTAG() {
+        return TAG;
     }
 }

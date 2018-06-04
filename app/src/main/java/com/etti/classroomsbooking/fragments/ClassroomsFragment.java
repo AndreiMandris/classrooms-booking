@@ -33,7 +33,7 @@ import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
  * create an instance of this fragment.
  */
 public class ClassroomsFragment extends Fragment {
-
+    private static final String TAG = ClassroomsFragment.class.getSimpleName();
     ListAdapter adapter;
     ListView listView;
     DatabaseReference roomsRef;

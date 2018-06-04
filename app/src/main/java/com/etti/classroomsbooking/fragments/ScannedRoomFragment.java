@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 import static com.etti.classroomsbooking.util.Constant.DATE_IN_MILLIS;
 import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
-import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMillis;
+import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
 
 /**
@@ -48,7 +48,7 @@ import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMill
  * create an instance of this fragment.
  */
 public class ScannedRoomFragment extends Fragment {
-
+    private static final String TAG = ScannedRoomFragment.class.getSimpleName();
     Long dateInMillis;
     DatabaseReference rootRef;
     DatabaseReference classroomsRef;
@@ -78,7 +78,7 @@ public class ScannedRoomFragment extends Fragment {
         TextView classroomNametextView = view.findViewById(R.id.classroomNameView);
         TextView dateOfEvents = view.findViewById(R.id.dateOfEvents);
         FloatingActionButton addEventButton = view.findViewById(R.id.floatingActionButton2);
-        Button cancelMeetingsButton = view.findViewById(R.id.cancelMeetings);
+        FloatingActionButton cancelMeetingsButton = view.findViewById(R.id.cancelSelectedMeetings);
 
         long selectedDateInMillis = System.currentTimeMillis();
         mainActivity = (MainActivity) getActivity();

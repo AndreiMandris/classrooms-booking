@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMillis;
+import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
 public class Classroom implements Serializable{
     private int id;

@@ -9,7 +9,7 @@
     <ListView
         android:id="@+id/list_events"
         android:layout_width="match_parent"
-        android:layout_height="431dp"
+        android:layout_height="428dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="89dp"
         android:choiceMode="multipleChoice" />
@@ -20,20 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/list_events"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="30dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_input_add" />
-
-    <Button
-        android:id="@+id/cancelMeetings"
-        android:layout_width="136dp"
-        android:layout_height="35dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/list_events"
-        android:layout_marginStart="31dp"
-        android:background="#FF4081"
-        android:text="Cancel selected"
-        android:textColor="@color/mdtp_white" />
+        android:src="@drawable/ic_add_black_24dp" />
 
     <TextView
         android:id="@+id/classroomNameView"
@@ -44,7 +33,9 @@
         android:layout_marginBottom="-89dp"
         android:layout_marginStart="11dp"
         android:text="TextView"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:textColor="@color/colorEvents"/>
+
 
     <TextView
         android:id="@+id/dateOfEvents"
@@ -53,5 +44,18 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/classroomNameView"
         android:layout_marginEnd="15dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="@color/colorEvents"
+        android:fontFamily="sans-serif-medium"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/cancelSelectedMeetings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/list_events"
+        android:layout_marginStart="30dp"
+        android:clickable="true"
+        android:src="@drawable/ic_delete_black_24dp" />
+
 </RelativeLayout>

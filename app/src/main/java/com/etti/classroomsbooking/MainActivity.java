@@ -1,21 +1,14 @@
 package com.etti.classroomsbooking;
 
-import android.app.FragmentManager;
-import android.app.TimePickerDialog;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.SparseBooleanArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +18,9 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.etti.classroomsbooking.fragments.CalendarFragment;
+import com.etti.classroomsbooking.fragments.ClassroomsFragment;
 import com.etti.classroomsbooking.fragments.EventsFragment;
 import com.etti.classroomsbooking.fragments.ScannedRoomFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
@@ -53,28 +46,27 @@ import java.util.Map;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import static com.etti.classroomsbooking.ScanQRActivity.scannedQRCode;
 import static com.etti.classroomsbooking.util.Constant.EVENT_CHECK_BOX;
 import static com.etti.classroomsbooking.util.Constant.REQUEST_CODE_QR;
 import static com.etti.classroomsbooking.util.Constant.TIME_INTERVAL;
 import static com.etti.classroomsbooking.util.Constant.USER;
-import static com.etti.classroomsbooking.util.Constant.formatTime;
-import static com.etti.classroomsbooking.util.Constant.getStringDateFromTimeMillis;
+import static com.etti.classroomsbooking.util.Utility.formatTime;
+import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
-    private Button buttonLogout;
     private FirebaseAuth firebaseAuth;
     private DrawerLayout drawer;
-    SimpleAdapter adapter;
+    private SimpleAdapter adapter;
     private boolean mReturningWithResult = false;
     private TextView navHeaderTitle;
-
     private List<Classroom> classrooms;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == REQUEST_CODE_QR) {
+            if (requestCode == REQUEST_CODE_QR && scannedQRCode != -1) {
                 mReturningWithResult = true;
             }
         }
@@ -109,10 +101,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         classrooms.add(new Classroom(5, "B03"));
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, new CalendarFragment(), new CalendarFragment().getTag())
-                .addToBackStack(null)
-                .commit();
+        moveToFragment(new ClassroomsFragment());
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();

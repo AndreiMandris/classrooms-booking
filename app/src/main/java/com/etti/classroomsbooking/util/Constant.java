@@ -4,6 +4,7 @@ import com.etti.classroomsbooking.model.Classroom;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Constant {
     public static final String EVENT_CHECK_BOX = "EVENT_CHECK_BOX";
     public static final String TIME_INTERVAL = "TIME_INTERVAL";
     public static final int REQUEST_CODE_QR = 2984;
+    public static final List<String> ACCEPTED_QR_CODES = Arrays.asList(new String[]{"classroom-0", "classroom-1", "classroom-2", "classroom-3", "classroom-4", "classroom-5"});
 
     static {
         HashMap<Integer, Classroom> classrooms = new HashMap<>();
@@ -25,23 +27,5 @@ public class Constant {
         classrooms.put(4, new Classroom(3, "B01"));
         classrooms.put(5, new Classroom(4, "B02"));
         classrooms.put(6, new Classroom(5, "B03"));
-    }
-
-    public static String getStringDateFromTimeMillis(long currentDateInMillis){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(currentDateInMillis);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int year = calendar.get(Calendar.YEAR);
-        String date = "" + formatTime(day) + "-" + formatTime(month) + "-" + year;
-        return date;
-    }
-
-    public static String formatTime(int x){
-        if ((x > 9 && x < 100) || (x < -9 && x > -100)){
-            return "" + x;
-        }else {
-            return "0" + x;
-        }
     }
 }

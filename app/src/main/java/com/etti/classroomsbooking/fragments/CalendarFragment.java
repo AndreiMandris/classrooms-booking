@@ -31,6 +31,7 @@ import static java.util.Calendar.MONDAY;
  * create an instance of this fragment.
  */
 public class CalendarFragment extends Fragment{
+    private static final String TAG = CalendarFragment.class.getSimpleName();
     DatePicker datePicker;
     FloatingActionButton floatingActionButton;
     Long dateInMillis;
