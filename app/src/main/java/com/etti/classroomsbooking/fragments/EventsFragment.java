@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,8 +21,6 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.Timepoint;
 import com.google.firebase.database.DatabaseReference;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +28,6 @@ import java.util.stream.Collectors;
 
 import static com.etti.classroomsbooking.util.Constant.DATE_IN_MILLIS;
 import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
-import static com.etti.classroomsbooking.util.Utility.getFormattedTimeInterval;
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
 
@@ -97,10 +93,7 @@ public class EventsFragment extends Fragment {
 
         FloatingActionButton cancelMeetingsButton = view.findViewById(R.id.cancelSelectedMeetings);
         if (cancelMeetingsButton != null) {
-                    cancelMeetingsButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
+                    cancelMeetingsButton.setOnClickListener(v -> {
                     int count = listView.getCount();
                     ArrayList<TimeLapse> intervalsFromSpecifiedDate = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
                     ArrayList<TimeLapse> otherIntervals = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> !interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
@@ -118,7 +111,7 @@ public class EventsFragment extends Fragment {
                     selectedClassroom.setIntervals(intervalsFromSpecifiedDate);
                     saveBookingToDB(selectedClassroom);
                     mainActivity.buildEventsListView(listView, selectedClassroom, dateInMillis);
-                }
+
             });
         }
         return view;
@@ -126,12 +119,9 @@ public class EventsFragment extends Fragment {
 
     public void displayStartTimePicker(final Classroom classroom, ListView listView){
         String selectedDate = getStringDateFromTimeMillis(dateInMillis);
-        TimePickerDialog tpd = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+        TimePickerDialog tpd = TimePickerDialog.newInstance((view, hourOfDay, minute, second) -> {
                 double startPickedTime = getComposedHour(hourOfDay, minute);
                 displayEndTimePicker(startPickedTime, classroom, selectedDate, listView);
-            }
         }, true);
 
         boolean[] disabledHours = classroom.checkAvailability(selectedDate);
@@ -152,14 +142,11 @@ public class EventsFragment extends Fragment {
     }
 
     public void displayEndTimePicker(double startPickedTime, Classroom classroom, String selectedDate, ListView listView){
-        TimePickerDialog tpdE = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+        TimePickerDialog tpdE = TimePickerDialog.newInstance((view, hourOfDay, minute, second) -> {
                 classroom.bookClassroom(startPickedTime, getComposedHour(hourOfDay, minute), auth.getCurrentUser().getEmail(), dateInMillis);
                 saveBookingToDB(classroom);
                 mainActivity.buildEventsListView(listView, classroom, dateInMillis);
                 ((MainActivity)getActivity()).notifyAdapter();
-            }
         }, true);
         boolean[] disabledHoursE = classroom.checkAvailabilityE(selectedDate, startPickedTime);
         List<Timepoint> selectableTimesE = new ArrayList<>();
