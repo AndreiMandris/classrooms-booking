@@ -18,6 +18,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import static android.Manifest.permission.CAMERA;
 import static com.etti.classroomsbooking.util.Constant.ACCEPTED_QR_CODES;
 
+// Reference: QR and Barcode Scanner | Android Tutorial (https://www.youtube.com/watch?v=otkz5Cwdw38)
 public class ScanQRActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private static final int REQ_CAMERA = 1;

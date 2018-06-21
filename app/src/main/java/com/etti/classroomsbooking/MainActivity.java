@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -21,23 +20,14 @@ import android.widget.TextView;
 
 import com.etti.classroomsbooking.fragments.CalendarFragment;
 import com.etti.classroomsbooking.fragments.ClassroomsFragment;
-import com.etti.classroomsbooking.fragments.EventsFragment;
 import com.etti.classroomsbooking.fragments.ScannedRoomFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
 import com.etti.classroomsbooking.model.Classroom;
 import com.etti.classroomsbooking.model.TimeLapse;
-import com.etti.classroomsbooking.util.Constant;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -52,6 +42,7 @@ import static com.etti.classroomsbooking.util.Constant.REQUEST_CODE_QR;
 import static com.etti.classroomsbooking.util.Constant.TIME_INTERVAL;
 import static com.etti.classroomsbooking.util.Constant.USER;
 import static com.etti.classroomsbooking.util.Utility.formatTime;
+import static com.etti.classroomsbooking.util.Utility.getFormattedTimeInterval;
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
@@ -101,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         classrooms.add(new Classroom(5, "B03"));
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        moveToFragment(new ClassroomsFragment());
+        moveToFragment(new CalendarFragment());
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -142,11 +133,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         for (TimeLapse interval : classroomIntervals){
 
             if (getStringDateFromTimeMillis(selectedDateInMillis).equals(interval.getDate())) {
-                double startTime = interval.getStartTime();
-                double endTime = interval.getEndTime();
-                String startTimeFormatted = formatTime((int) startTime) + ":" + (startTime % 1 == 0.0 ? "00" : "30");
-                String endTimeFormatted = formatTime((int) endTime) + ":" + (endTime % 1 == 0.0 ? "00" : "30");
-                String timeInterval = "" + startTimeFormatted + " - " + endTimeFormatted;
+                String timeInterval = getFormattedTimeInterval(interval);
                 eventsDetails.put(timeInterval, interval.getUserName());
             }
         }
@@ -166,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Constant.checkedEventsList.set(position, true);
                 ViewGroup row = (ViewGroup) listView.getChildAt(position);
                 CheckBox checkBox = row.findViewById(R.id.eventCheckBox);
                 checkBox.setChecked(true);

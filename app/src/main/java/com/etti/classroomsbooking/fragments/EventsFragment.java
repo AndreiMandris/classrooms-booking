@@ -1,7 +1,6 @@
 package com.etti.classroomsbooking.fragments;
 
 import com.etti.classroomsbooking.model.TimeLapse;
-import com.etti.classroomsbooking.util.Constant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,15 +26,12 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.etti.classroomsbooking.util.Constant.DATE_IN_MILLIS;
 import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
+import static com.etti.classroomsbooking.util.Utility.getFormattedTimeInterval;
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
 
@@ -128,27 +124,6 @@ public class EventsFragment extends Fragment {
         return view;
     }
 
-//    public void tickCheckBoxes(ListView listView){
-//        for (int i = 0; i < 5; ++i){
-//            ViewGroup row = (ViewGroup) listView.getChildAt(i);
-//            CheckBox checkBox = row.findViewById(R.id.eventCheckBox);
-//            //checkBox.setChecked(Constant.checkedEventsList.get(i - 1));
-//        }
-//    }
-//    public void hideCheckBoxes(ListView listView){
-//        if(listView.getChildCount() != 0) {
-//            int count = listView.getCount();
-//            for (int i = 0; i < count; ++i) {
-//                ViewGroup row = (ViewGroup) listView.getChildAt(i);
-//                CheckBox checkBox = row.findViewById(R.id.eventCheckBox);
-//                TextView userEmail = row.findViewById(R.id.textView2);
-//                if (!userEmail.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
-//                    checkBox.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        }
-//    }
-
     public void displayStartTimePicker(final Classroom classroom, ListView listView){
         String selectedDate = getStringDateFromTimeMillis(dateInMillis);
         TimePickerDialog tpd = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
@@ -172,8 +147,8 @@ public class EventsFragment extends Fragment {
         tps = selectableTimes.toArray(tps);
 
         tpd.setSelectableTimes(tps);
-        tpd.setTitle("Pick meeting start time");
-        tpd.show(getActivity().getFragmentManager(), "Pick meeting start time");
+        tpd.setTitle("Choose starting time");
+        tpd.show(getActivity().getFragmentManager(), "Choose starting time");
     }
 
     public void displayEndTimePicker(double startPickedTime, Classroom classroom, String selectedDate, ListView listView){
@@ -198,8 +173,8 @@ public class EventsFragment extends Fragment {
         tps = selectableTimesE.toArray(tps);
 
         tpdE.setSelectableTimes(tps);
-        tpdE.setTitle("Pick meeting end time");
-        tpdE.show(getActivity().getFragmentManager(), "Pick meeting end time");
+        tpdE.setTitle("Choose ending time");
+        tpdE.show(getActivity().getFragmentManager(), "Choose ending time");
     }
 
     private void saveBookingToDB(Classroom classroom){
