@@ -1,7 +1,7 @@
 package com.etti.classroomsbooking.fragments;
 
 import com.etti.classroomsbooking.ScanQRActivity;
-import com.etti.classroomsbooking.model.TimeLapse;
+import com.etti.classroomsbooking.model.TimeFrame;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -78,8 +78,8 @@ public class ScannedRoomFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     int count = listView.getCount();
-                    ArrayList<TimeLapse> intervalsFromSpecifiedDate = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
-                    ArrayList<TimeLapse> otherIntervals = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> !interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
+                    ArrayList<TimeFrame> intervalsFromSpecifiedDate = (ArrayList<TimeFrame>) selectedClassroom.getIntervals().stream().filter(interval -> interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
+                    ArrayList<TimeFrame> otherIntervals = (ArrayList<TimeFrame>) selectedClassroom.getIntervals().stream().filter(interval -> !interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
                     for(int i=0; i<count; ++i) {
                         ViewGroup row = (ViewGroup) listView.getChildAt(i);
                         CheckBox check = row.findViewById(R.id.eventCheckBox);
@@ -88,8 +88,8 @@ public class ScannedRoomFragment extends Fragment {
                         }
                     }
                     intervalsFromSpecifiedDate.removeAll(Collections.singleton(null));
-                    for (TimeLapse timeLapse : otherIntervals){
-                        intervalsFromSpecifiedDate.add(timeLapse);
+                    for (TimeFrame timeFrame : otherIntervals){
+                        intervalsFromSpecifiedDate.add(timeFrame);
                     }
                     selectedClassroom.setIntervals(intervalsFromSpecifiedDate);
                     saveBookingToDB(selectedClassroom);

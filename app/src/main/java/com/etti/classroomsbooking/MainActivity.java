@@ -22,7 +22,7 @@ import com.etti.classroomsbooking.fragments.CalendarFragment;
 import com.etti.classroomsbooking.fragments.ScannedRoomFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
 import com.etti.classroomsbooking.model.Classroom;
-import com.etti.classroomsbooking.model.TimeLapse;
+import com.etti.classroomsbooking.model.TimeFrame;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.Result;
 
@@ -121,13 +121,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     }
 
     public void buildEventsListView(ListView listView, Classroom classroom, long selectedDateInMillis){
-        ArrayList<TimeLapse> classroomIntervals = classroom.getIntervals();
+        ArrayList<TimeFrame> classroomIntervals = classroom.getIntervals();
         if (classroomIntervals == null){
             return;
         }
         classroom.sortIntervals();
         Map<String, String> eventsDetails = new LinkedHashMap<>();
-        for (TimeLapse interval : classroomIntervals){
+        for (TimeFrame interval : classroomIntervals){
 
             if (getStringDateFromTimeMillis(selectedDateInMillis).equals(interval.getDate())) {
                 String timeInterval = getFormattedTimeInterval(interval);

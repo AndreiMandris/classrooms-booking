@@ -3,21 +3,19 @@ package com.etti.classroomsbooking.model;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Time;
 import java.util.Objects;
 
-public class TimeLapse implements Serializable, Comparable<TimeLapse>{
+public class TimeFrame implements Serializable, Comparable<TimeFrame>{
     private String userName;
     private int idClassroom;
     private double startTime;
     private double endTime;
     private String date;
 
-    public TimeLapse() {
+    public TimeFrame() {
     }
 
-    public TimeLapse(String userName, int idClassroom, double startTime, double endTime, String date) {
+    public TimeFrame(String userName, int idClassroom, double startTime, double endTime, String date) {
         this.userName = userName;
         this.idClassroom = idClassroom;
         this.startTime = startTime;
@@ -25,7 +23,7 @@ public class TimeLapse implements Serializable, Comparable<TimeLapse>{
         this.date = date;
     }
 
-    public TimeLapse(String userName, double startTime, double endTime, String date) {
+    public TimeFrame(String userName, double startTime, double endTime, String date) {
         this.userName = userName;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -68,12 +66,12 @@ public class TimeLapse implements Serializable, Comparable<TimeLapse>{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TimeLapse timeLapse = (TimeLapse) o;
-        return idClassroom == timeLapse.idClassroom &&
-                Double.compare(timeLapse.startTime, startTime) == 0 &&
-                Double.compare(timeLapse.endTime, endTime) == 0 &&
-                Objects.equals(userName, timeLapse.userName) &&
-                Objects.equals(date, timeLapse.date);
+        TimeFrame timeFrame = (TimeFrame) o;
+        return idClassroom == timeFrame.idClassroom &&
+                Double.compare(timeFrame.startTime, startTime) == 0 &&
+                Double.compare(timeFrame.endTime, endTime) == 0 &&
+                Objects.equals(userName, timeFrame.userName) &&
+                Objects.equals(date, timeFrame.date);
     }
 
     @Override
@@ -82,10 +80,10 @@ public class TimeLapse implements Serializable, Comparable<TimeLapse>{
     }
 
     @Override
-    public int compareTo(@NonNull TimeLapse timeLapse) {
-        if (this.startTime < timeLapse.startTime){
+    public int compareTo(@NonNull TimeFrame timeFrame) {
+        if (this.startTime < timeFrame.startTime){
             return 1;
-        } else if(this.startTime > timeLapse.startTime){
+        } else if(this.startTime > timeFrame.startTime){
             return -1;
         } else{
             return 0;

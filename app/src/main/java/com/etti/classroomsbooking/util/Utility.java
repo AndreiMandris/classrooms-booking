@@ -2,7 +2,7 @@ package com.etti.classroomsbooking.util;
 
 import android.support.annotation.NonNull;
 
-import com.etti.classroomsbooking.model.TimeLapse;
+import com.etti.classroomsbooking.model.TimeFrame;
 
 import java.util.Calendar;
 
@@ -26,7 +26,7 @@ public class Utility {
     }
 
     @NonNull
-    public static String getFormattedTimeInterval(TimeLapse interval) {
+    public static String getFormattedTimeInterval(TimeFrame interval) {
         double startTime = interval.getStartTime();
         double endTime = interval.getEndTime();
         String startTimeFormatted = formatTime((int) startTime) + ":" + (startTime % 1 == 0.0 ? "00" : "30");
