@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,30 +22,13 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.Timepoint;
 import com.google.firebase.database.DatabaseReference;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.etti.classroomsbooking.util.Constant.DATE_IN_MILLIS;
-import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link EventsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ScannedRoomFragment extends Fragment {
     private static final String TAG = ScannedRoomFragment.class.getSimpleName();
     Long dateInMillis;
@@ -60,13 +42,6 @@ public class ScannedRoomFragment extends Fragment {
 
     public ScannedRoomFragment() {
         // Required empty public constructor
-    }
-
-    public static EventsFragment newInstance(Bundle bundle) {
-        EventsFragment fragment = new EventsFragment();
-        Bundle args = bundle;
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -84,7 +59,6 @@ public class ScannedRoomFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         Classroom selectedClassroom = ((MainActivity) getActivity()).getClassrooms().get(ScanQRActivity.scannedQRCode);
         mainActivity.buildEventsListView(listView, selectedClassroom, selectedDateInMillis);
-        //hideCheckBoxes(listView);
 
         classroomNametextView.setText("Classroom " + selectedClassroom.getName());
         dateOfEvents.setText(getStringDateFromTimeMillis(dateInMillis));
@@ -96,7 +70,6 @@ public class ScannedRoomFragment extends Fragment {
 
         addEventButton.setOnClickListener(v -> {
             displayStartTimePicker(selectedClassroom, listView);
-            //((MainActivity) getActivity()).notifyAdapter();
         });
 
         if (cancelMeetingsButton != null) {
@@ -137,7 +110,7 @@ public class ScannedRoomFragment extends Fragment {
             }
         }, true);
 
-        boolean[] disabledHours = classroom.checkAvailability(selectedDate);
+        boolean[] disabledHours = classroom.checkStartTimeAvailability(selectedDate);
         List<Timepoint> selectableTimes = new ArrayList<>();
         for (int i = 0; i < 48; i++){
             if (disabledHours[i] != true){
@@ -164,7 +137,7 @@ public class ScannedRoomFragment extends Fragment {
                 ((MainActivity)getActivity()).notifyAdapter();
             }
         }, true);
-        boolean[] disabledHoursE = classroom.checkAvailabilityE(selectedDate, startPickedTime);
+        boolean[] disabledHoursE = classroom.checkEndTimeAvailability(selectedDate, startPickedTime);
         List<Timepoint> selectableTimesE = new ArrayList<>();
         for (int i = 0; i < 48; i++){
             if (disabledHoursE[i] != true && (double) i / 2 > startPickedTime){

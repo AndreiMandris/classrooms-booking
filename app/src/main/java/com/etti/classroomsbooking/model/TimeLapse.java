@@ -8,7 +8,6 @@ import java.sql.Time;
 import java.util.Objects;
 
 public class TimeLapse implements Serializable, Comparable<TimeLapse>{
-    private int id;
     private String userName;
     private int idClassroom;
     private double startTime;
@@ -27,36 +26,10 @@ public class TimeLapse implements Serializable, Comparable<TimeLapse>{
     }
 
     public TimeLapse(String userName, double startTime, double endTime, String date) {
-        this.id = id;
         this.userName = userName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getIdUser() {
-        return userName;
-    }
-
-    public void setIdUser(String idUser) {
-        this.userName = idUser;
-    }
-
-    public int getIdClassroom() {
-        return idClassroom;
-    }
-
-    public void setIdClassroom(int idClassroom) {
-        this.idClassroom = idClassroom;
     }
 
     public double getStartTime() {
@@ -96,8 +69,7 @@ public class TimeLapse implements Serializable, Comparable<TimeLapse>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TimeLapse timeLapse = (TimeLapse) o;
-        return id == timeLapse.id &&
-                idClassroom == timeLapse.idClassroom &&
+        return idClassroom == timeLapse.idClassroom &&
                 Double.compare(timeLapse.startTime, startTime) == 0 &&
                 Double.compare(timeLapse.endTime, endTime) == 0 &&
                 Objects.equals(userName, timeLapse.userName) &&
@@ -106,7 +78,7 @@ public class TimeLapse implements Serializable, Comparable<TimeLapse>{
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, idClassroom, startTime, endTime, date);
+        return Objects.hash(userName, idClassroom, startTime, endTime, date);
     }
 
     @Override

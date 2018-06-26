@@ -24,31 +24,13 @@ import java.util.HashMap;
 import static com.etti.classroomsbooking.util.Constant.ROOM;
 import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link ClassroomsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ClassroomsFragment extends Fragment {
     private static final String TAG = ClassroomsFragment.class.getSimpleName();
     ListAdapter adapter;
     ListView listView;
-    DatabaseReference roomsRef;
-    FirebaseDatabase db;
-
 
     public ClassroomsFragment() {
         // Required empty public constructor
-    }
-
-    public static ClassroomsFragment newInstance(String param1, String param2) {
-        ClassroomsFragment fragment = new ClassroomsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override

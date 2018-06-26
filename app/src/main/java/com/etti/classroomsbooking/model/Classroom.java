@@ -61,7 +61,7 @@ public class Classroom implements Serializable{
         this.intervals.add(new TimeLapse(user, this.getId(), startTime, endTime, getStringDateFromTimeMillis(currentDateInMillis)));
     }
 
-    public boolean[] checkAvailability(String selectedDate) {
+    public boolean[] checkStartTimeAvailability(String selectedDate) {
         if (this.getIntervals() == null){
             this.intervals = new ArrayList<>();
         }
@@ -78,7 +78,7 @@ public class Classroom implements Serializable{
         return disabledHours;
     }
 
-    public boolean[] checkAvailabilityE(String selectedDate, double startPickedTime) {
+    public boolean[] checkEndTimeAvailability(String selectedDate, double startPickedTime) {
         boolean[] disabledHours = new boolean[48];
         for (TimeLapse interval : this.getIntervals()) {
             if (interval.getDate().equals(selectedDate)) {

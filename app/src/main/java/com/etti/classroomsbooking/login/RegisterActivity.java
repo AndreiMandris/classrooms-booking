@@ -73,7 +73,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()){
-                //we will start the profile activity here
                 progressDialog.dismiss();
                 Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();
             } else {

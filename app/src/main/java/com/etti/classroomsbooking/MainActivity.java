@@ -19,7 +19,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.etti.classroomsbooking.fragments.CalendarFragment;
-import com.etti.classroomsbooking.fragments.ClassroomsFragment;
 import com.etti.classroomsbooking.fragments.ScannedRoomFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
 import com.etti.classroomsbooking.model.Classroom;
@@ -37,11 +36,9 @@ import java.util.Map;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.etti.classroomsbooking.ScanQRActivity.scannedQRCode;
-import static com.etti.classroomsbooking.util.Constant.EVENT_CHECK_BOX;
 import static com.etti.classroomsbooking.util.Constant.REQUEST_CODE_QR;
 import static com.etti.classroomsbooking.util.Constant.TIME_INTERVAL;
 import static com.etti.classroomsbooking.util.Constant.USER;
-import static com.etti.classroomsbooking.util.Utility.formatTime;
 import static com.etti.classroomsbooking.util.Utility.getFormattedTimeInterval;
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
@@ -146,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
             Map<String, String> pair = new HashMap<>();
             pair.put(TIME_INTERVAL, entry.getKey());
-            pair.put(USER, entry.getValue());
             pair.put(USER, entry.getValue());
             listItems.add(pair);
         }

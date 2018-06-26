@@ -30,19 +30,10 @@ import static com.etti.classroomsbooking.util.Constant.DATE_IN_MILLIS;
 import static com.etti.classroomsbooking.util.Constant.ROOM_POSITION;
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link EventsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EventsFragment extends Fragment {
 
     private static final String TAG = EventsFragment.class.getSimpleName();
     Long dateInMillis;
-    DatabaseReference rootRef;
     DatabaseReference classroomsRef;
     DatabaseReference classroomRef;
     FirebaseDatabase db;
@@ -75,14 +66,12 @@ public class EventsFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         Classroom selectedClassroom = ((MainActivity) getActivity()).getClassrooms().get(position);
         mainActivity.buildEventsListView(listView, selectedClassroom, selectedDateInMillis);
-        //hideCheckBoxes(listView);
 
         TextView classroomNametextView = view.findViewById(R.id.classroomNameView);
         TextView dateOfEvents = view.findViewById(R.id.dateOfEvents);
         classroomNametextView.setText("Classroom " + selectedClassroom.getName());
         dateOfEvents.setText(getStringDateFromTimeMillis(dateInMillis));
         db = FirebaseDatabase.getInstance();
-        rootRef = FirebaseDatabase.getInstance().getReference();
         classroomsRef = db.getReference("rooms");
 
         auth = FirebaseAuth.getInstance();
@@ -124,7 +113,7 @@ public class EventsFragment extends Fragment {
                 displayEndTimePicker(startPickedTime, classroom, selectedDate, listView);
         }, true);
 
-        boolean[] disabledHours = classroom.checkAvailability(selectedDate);
+        boolean[] disabledHours = classroom.checkStartTimeAvailability(selectedDate);
         List<Timepoint> selectableTimes = new ArrayList<>();
         for (int i = 0; i < 48; i++){
             if (disabledHours[i] != true){
@@ -148,7 +137,7 @@ public class EventsFragment extends Fragment {
                 mainActivity.buildEventsListView(listView, classroom, dateInMillis);
                 ((MainActivity)getActivity()).notifyAdapter();
         }, true);
-        boolean[] disabledHoursE = classroom.checkAvailabilityE(selectedDate, startPickedTime);
+        boolean[] disabledHoursE = classroom.checkEndTimeAvailability(selectedDate, startPickedTime);
         List<Timepoint> selectableTimesE = new ArrayList<>();
         for (int i = 0; i < 48; i++){
             if (disabledHoursE[i] != true && (double) i / 2 > startPickedTime){
