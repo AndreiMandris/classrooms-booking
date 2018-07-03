@@ -1,6 +1,6 @@
 package com.etti.classroomsbooking.fragments;
 
-import com.etti.classroomsbooking.model.TimeFrame;
+import com.etti.classroomsbooking.model.TimeLapse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -82,41 +82,41 @@ public class EventsFragment extends Fragment {
 
         FloatingActionButton cancelMeetingsButton = view.findViewById(R.id.cancelSelectedMeetings);
         if (cancelMeetingsButton != null) {
-                    cancelMeetingsButton.setOnClickListener(v -> {
-                    int count = listView.getCount();
-                    ArrayList<TimeFrame> intervalsFromSpecifiedDate = (ArrayList<TimeFrame>) selectedClassroom.getIntervals().stream().filter(interval -> interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
-                    ArrayList<TimeFrame> otherIntervals = (ArrayList<TimeFrame>) selectedClassroom.getIntervals().stream().filter(interval -> !interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
-                    for(int i=0; i<count; ++i) {
-                        ViewGroup row = (ViewGroup) listView.getChildAt(i);
-                        CheckBox check = row.findViewById(R.id.eventCheckBox);
-                        if (check.isChecked()) {
-                            intervalsFromSpecifiedDate.set(i, null);
-                        }
+            cancelMeetingsButton.setOnClickListener(v -> {
+                int count = listView.getCount();
+                ArrayList<TimeLapse> intervalsFromSpecifiedDate = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
+                ArrayList<TimeLapse> otherIntervals = (ArrayList<TimeLapse>) selectedClassroom.getIntervals().stream().filter(interval -> !interval.getDate().equals(getStringDateFromTimeMillis(selectedDateInMillis))).collect(Collectors.toList());
+                for (int i = 0; i < count; ++i) {
+                    ViewGroup row = (ViewGroup) listView.getChildAt(i);
+                    CheckBox check = row.findViewById(R.id.eventCheckBox);
+                    if (check.isChecked()) {
+                        intervalsFromSpecifiedDate.set(i, null);
                     }
-                    intervalsFromSpecifiedDate.removeAll(Collections.singleton(null));
-                    for (TimeFrame timeFrame : otherIntervals){
-                        intervalsFromSpecifiedDate.add(timeFrame);
-                    }
-                    selectedClassroom.setIntervals(intervalsFromSpecifiedDate);
-                    saveBookingToDB(selectedClassroom);
-                    mainActivity.buildEventsListView(listView, selectedClassroom, dateInMillis);
+                }
+                intervalsFromSpecifiedDate.removeAll(Collections.singleton(null));
+                for (TimeLapse timeLapse : otherIntervals) {
+                    intervalsFromSpecifiedDate.add(timeLapse);
+                }
+                selectedClassroom.setIntervals(intervalsFromSpecifiedDate);
+                saveBookingToDB(selectedClassroom);
+                mainActivity.buildEventsListView(listView, selectedClassroom, dateInMillis);
 
             });
         }
         return view;
     }
 
-    public void displayStartTimePicker(final Classroom classroom, ListView listView){
+    public void displayStartTimePicker(final Classroom classroom, ListView listView) {
         String selectedDate = getStringDateFromTimeMillis(dateInMillis);
         TimePickerDialog tpd = TimePickerDialog.newInstance((view, hourOfDay, minute, second) -> {
-                double startPickedTime = getComposedHour(hourOfDay, minute);
-                displayEndTimePicker(startPickedTime, classroom, selectedDate, listView);
+            double startPickedTime = getComposedHour(hourOfDay, minute);
+            displayEndTimePicker(startPickedTime, classroom, selectedDate, listView);
         }, true);
 
         boolean[] disabledHours = classroom.checkStartTimeAvailability(selectedDate);
         List<Timepoint> selectableTimes = new ArrayList<>();
-        for (int i = 0; i < 48; i++){
-            if (disabledHours[i] != true){
+        for (int i = 0; i < 48; i++) {
+            if (disabledHours[i] != true) {
                 double j = (double) i / 2;
                 selectableTimes.add(new Timepoint((int) j, (int) ((j % 1) * 60)));
             }
@@ -130,17 +130,17 @@ public class EventsFragment extends Fragment {
         tpd.show(getActivity().getFragmentManager(), "Choose starting time");
     }
 
-    public void displayEndTimePicker(double startPickedTime, Classroom classroom, String selectedDate, ListView listView){
+    public void displayEndTimePicker(double startPickedTime, Classroom classroom, String selectedDate, ListView listView) {
         TimePickerDialog tpdE = TimePickerDialog.newInstance((view, hourOfDay, minute, second) -> {
-                classroom.bookClassroom(startPickedTime, getComposedHour(hourOfDay, minute), auth.getCurrentUser().getEmail(), dateInMillis);
-                saveBookingToDB(classroom);
-                mainActivity.buildEventsListView(listView, classroom, dateInMillis);
-                ((MainActivity)getActivity()).notifyAdapter();
+            classroom.bookClassroom(startPickedTime, getComposedHour(hourOfDay, minute), auth.getCurrentUser().getEmail(), dateInMillis);
+            saveBookingToDB(classroom);
+            mainActivity.buildEventsListView(listView, classroom, dateInMillis);
+            ((MainActivity) getActivity()).notifyAdapter();
         }, true);
         boolean[] disabledHoursE = classroom.checkEndTimeAvailability(selectedDate, startPickedTime);
         List<Timepoint> selectableTimesE = new ArrayList<>();
-        for (int i = 0; i < 48; i++){
-            if (disabledHoursE[i] != true && (double) i / 2 > startPickedTime){
+        for (int i = 0; i < 48; i++) {
+            if (disabledHoursE[i] != true && (double) i / 2 > startPickedTime) {
                 double j = (double) i / 2;
                 selectableTimesE.add(new Timepoint((int) j, (int) ((j % 1) * 60)));
             }
@@ -153,7 +153,7 @@ public class EventsFragment extends Fragment {
         tpdE.show(getActivity().getFragmentManager(), "Choose ending time");
     }
 
-    private void saveBookingToDB(Classroom classroom){
+    private void saveBookingToDB(Classroom classroom) {
         classroom.sortIntervals();
         classroomRef = classroomsRef.child("classroom" + classroom.getId());
         classroomRef.setValue(classroom);

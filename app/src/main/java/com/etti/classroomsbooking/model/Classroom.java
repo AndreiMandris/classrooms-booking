@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
-public class Classroom implements Serializable{
+public class Classroom implements Serializable {
     private int id;
     private String name;
-    private ArrayList<TimeFrame> intervals;
+    private ArrayList<TimeLapse> intervals;
 
     public Classroom(int id, String name) {
         this.id = id;
@@ -16,7 +16,7 @@ public class Classroom implements Serializable{
         intervals = new ArrayList<>();
     }
 
-    public Classroom(int id, String name, ArrayList<TimeFrame> intervals) {
+    public Classroom(int id, String name, ArrayList<TimeLapse> intervals) {
         this.id = id;
         this.name = name;
         this.intervals = intervals;
@@ -41,29 +41,29 @@ public class Classroom implements Serializable{
         this.name = name;
     }
 
-    public ArrayList<TimeFrame> getIntervals() {
+    public ArrayList<TimeLapse> getIntervals() {
         return intervals;
     }
 
-    public ArrayList<TimeFrame> getIntervalsByDate(long dateInMillis) {
+    public ArrayList<TimeLapse> getIntervalsByDate(long dateInMillis) {
 
         return intervals;
     }
 
-    public void setIntervals(ArrayList<TimeFrame> intervals) {
+    public void setIntervals(ArrayList<TimeLapse> intervals) {
         this.intervals = intervals;
     }
 
     public void bookClassroom(double startTime, double endTime, String user, long currentDateInMillis) {
-        this.intervals.add(new TimeFrame(user, this.getId(), startTime, endTime, getStringDateFromTimeMillis(currentDateInMillis)));
+        this.intervals.add(new TimeLapse(user, this.getId(), startTime, endTime, getStringDateFromTimeMillis(currentDateInMillis)));
     }
 
     public boolean[] checkStartTimeAvailability(String selectedDate) {
-        if (this.getIntervals() == null){
+        if (this.getIntervals() == null) {
             this.intervals = new ArrayList<>();
         }
         boolean[] disabledHours = new boolean[48];
-        for (TimeFrame interval : this.getIntervals()) {
+        for (TimeLapse interval : this.getIntervals()) {
             if (interval.getDate().equals(selectedDate)) {
                 for (double i = 0; i < 24; i += 0.5) {
                     if (interval.getStartTime() <= i && i < interval.getEndTime()) {
@@ -77,7 +77,7 @@ public class Classroom implements Serializable{
 
     public boolean[] checkEndTimeAvailability(String selectedDate, double startPickedTime) {
         boolean[] disabledHours = new boolean[48];
-        for (TimeFrame interval : this.getIntervals()) {
+        for (TimeLapse interval : this.getIntervals()) {
             if (interval.getDate().equals(selectedDate)) {
                 for (double i = 0; i < 24; i += 0.5) {
                     if (i > interval.getStartTime() && interval.getStartTime() > startPickedTime) {
@@ -92,13 +92,13 @@ public class Classroom implements Serializable{
         return disabledHours;
     }
 
-    public void sortIntervals(){
+    public void sortIntervals() {
         getIntervals().sort((timeFrame1, timeFrame2) -> {
-            if (timeFrame1.getStartTime() < timeFrame2.getStartTime()){
+            if (timeFrame1.getStartTime() < timeFrame2.getStartTime()) {
                 return -1;
-            } else if(timeFrame1.getStartTime() > timeFrame2.getStartTime()){
+            } else if (timeFrame1.getStartTime() > timeFrame2.getStartTime()) {
                 return 1;
-            } else{
+            } else {
                 return 0;
             }
         });

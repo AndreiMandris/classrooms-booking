@@ -5,17 +5,17 @@ import android.support.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class TimeFrame implements Serializable, Comparable<TimeFrame>{
+public class TimeLapse implements Serializable, Comparable<TimeLapse> {
     private String userName;
     private int idClassroom;
     private double startTime;
     private double endTime;
     private String date;
 
-    public TimeFrame() {
+    public TimeLapse() {
     }
 
-    public TimeFrame(String userName, int idClassroom, double startTime, double endTime, String date) {
+    public TimeLapse(String userName, int idClassroom, double startTime, double endTime, String date) {
         this.userName = userName;
         this.idClassroom = idClassroom;
         this.startTime = startTime;
@@ -23,7 +23,7 @@ public class TimeFrame implements Serializable, Comparable<TimeFrame>{
         this.date = date;
     }
 
-    public TimeFrame(String userName, double startTime, double endTime, String date) {
+    public TimeLapse(String userName, double startTime, double endTime, String date) {
         this.userName = userName;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -66,12 +66,12 @@ public class TimeFrame implements Serializable, Comparable<TimeFrame>{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TimeFrame timeFrame = (TimeFrame) o;
-        return idClassroom == timeFrame.idClassroom &&
-                Double.compare(timeFrame.startTime, startTime) == 0 &&
-                Double.compare(timeFrame.endTime, endTime) == 0 &&
-                Objects.equals(userName, timeFrame.userName) &&
-                Objects.equals(date, timeFrame.date);
+        TimeLapse timeLapse = (TimeLapse) o;
+        return idClassroom == timeLapse.idClassroom &&
+                Double.compare(timeLapse.startTime, startTime) == 0 &&
+                Double.compare(timeLapse.endTime, endTime) == 0 &&
+                Objects.equals(userName, timeLapse.userName) &&
+                Objects.equals(date, timeLapse.date);
     }
 
     @Override
@@ -80,12 +80,12 @@ public class TimeFrame implements Serializable, Comparable<TimeFrame>{
     }
 
     @Override
-    public int compareTo(@NonNull TimeFrame timeFrame) {
-        if (this.startTime < timeFrame.startTime){
+    public int compareTo(@NonNull TimeLapse timeLapse) {
+        if (this.startTime < timeLapse.startTime) {
             return 1;
-        } else if(this.startTime > timeFrame.startTime){
+        } else if (this.startTime > timeLapse.startTime) {
             return -1;
-        } else{
+        } else {
             return 0;
         }
     }

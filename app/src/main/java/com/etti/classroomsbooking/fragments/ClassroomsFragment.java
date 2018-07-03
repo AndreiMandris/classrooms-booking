@@ -39,7 +39,7 @@ public class ClassroomsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_classrooms, container, false);
         listView = view.findViewById(R.id.list_classrooms);
         String[] roomNames = {"A01", "A02", "A03", "B01", "B02", "B03"};
-        adapter=new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , roomNames);
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, roomNames);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             Bundle args = getArguments();

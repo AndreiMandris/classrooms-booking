@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.etti.classroomsbooking.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonRegister;
     private EditText editTextEmail;
@@ -44,35 +44,33 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if (view == buttonRegister){
+        if (view == buttonRegister) {
             registerUser();
         }
-        if (view == textViewSignin){
+        if (view == textViewSignin) {
             finish();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
     }
 
-    public void registerUser(){
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+    public void registerUser() {
+        String email = editTextEmail.getText().toString();
+        String password = editTextPassword.getText().toString();
 
-        if (TextUtils.isEmpty(email)){
-            //email is empty
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(password)){
-            //password is empty
-            Toast.makeText(this,"Please enter password", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()){
+            if (task.isSuccessful()) {
                 progressDialog.dismiss();
                 Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();
             } else {

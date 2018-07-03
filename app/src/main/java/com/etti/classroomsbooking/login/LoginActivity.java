@@ -33,7 +33,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import static android.widget.Toast.LENGTH_SHORT;
 
 //https://www.youtube.com/watch?v=-ywVw2O1pP8 - Firebase Google Sign on Tutorial
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonSignIn;
     private EditText editTextEmail;
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null){
+        if (firebaseAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
@@ -85,34 +85,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (view == buttonSignIn){
+        if (view == buttonSignIn) {
             userLogin();
         }
-        if (view == textViewSignIn){
+        if (view == textViewSignIn) {
             startActivity(new Intent(this, RegisterActivity.class));
         }
     }
 
-     private void userLogin() {
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+    private void userLogin() {
+        String email = editTextEmail.getText().toString();
+        String password = editTextPassword.getText().toString();
 
-        if (TextUtils.isEmpty(email)){
-            //email is empty
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(password)){
-            //password is empty
-            Toast.makeText(this,"Please enter password", LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", LENGTH_SHORT).show();
             return;
         }
         progressDialog.setMessage("Loging in...");
         progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             progressDialog.dismiss();
-            if (task.isSuccessful()){
+            if (task.isSuccessful()) {
                 finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } else {
@@ -147,7 +145,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -157,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication Failed.", LENGTH_SHORT).show();
-                        } else{
+                        } else {
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             mGoogleApiClient.disconnect();

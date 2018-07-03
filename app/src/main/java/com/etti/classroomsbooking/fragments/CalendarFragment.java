@@ -22,7 +22,7 @@ import java.util.Calendar;
 import static com.etti.classroomsbooking.util.Constant.DATE_IN_MILLIS;
 import static java.util.Calendar.MONDAY;
 
-public class CalendarFragment extends Fragment{
+public class CalendarFragment extends Fragment {
     private static final String TAG = CalendarFragment.class.getSimpleName();
     DatePicker datePicker;
     FloatingActionButton floatingActionButton;
@@ -65,11 +65,11 @@ public class CalendarFragment extends Fragment{
         roomsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot iterator : dataSnapshot.getChildren()){
+                for (DataSnapshot iterator : dataSnapshot.getChildren()) {
                     Classroom classroomFromDB = iterator.getValue(Classroom.class);
-                   if(mainActivity.getClassrooms() == null){
-                       return;
-                   }
+                    if (mainActivity.getClassrooms() == null) {
+                        return;
+                    }
                     mainActivity.getClassrooms().set(classroomFromDB.getId(), classroomFromDB);
                 }
             }
@@ -83,7 +83,7 @@ public class CalendarFragment extends Fragment{
         return view;
     }
 
-    public Calendar getDateInstance(DatePicker datePicker){
+    public Calendar getDateInstance(DatePicker datePicker) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
         return calendar;

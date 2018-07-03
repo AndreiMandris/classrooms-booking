@@ -31,10 +31,10 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
 
-        if(Build.VERSION_CODES.M <= Build.VERSION.SDK_INT){
-            if (isPermissionGranted()){
+        if (Build.VERSION_CODES.M <= Build.VERSION.SDK_INT) {
+            if (isPermissionGranted()) {
                 Toast.makeText(ScanQRActivity.this, "Persmission granted!", Toast.LENGTH_LONG).show();
-            } else{
+            } else {
                 requestForPermission();
             }
         } else {
@@ -43,18 +43,19 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
     }
-    private boolean isPermissionGranted(){
+
+    private boolean isPermissionGranted() {
         return PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(ScanQRActivity.this, CAMERA);
     }
 
-    private void requestForPermission(){
-        ActivityCompat.requestPermissions(this, new String[] {CAMERA}, REQ_CAMERA);
+    private void requestForPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQ_CAMERA);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION_CODES.M <= Build.VERSION.SDK_INT){
+        if (Build.VERSION_CODES.M <= Build.VERSION.SDK_INT) {
             if (isPermissionGranted()) {
                 if (scannerView == null) {
                     setContentView(new ZXingScannerView(this));
@@ -84,7 +85,7 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
                 scannedQRCode = -1;
             }
             finish();
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
         }
     }
 }

@@ -22,7 +22,7 @@ import com.etti.classroomsbooking.fragments.CalendarFragment;
 import com.etti.classroomsbooking.fragments.ScannedRoomFragment;
 import com.etti.classroomsbooking.login.LoginActivity;
 import com.etti.classroomsbooking.model.Classroom;
-import com.etti.classroomsbooking.model.TimeFrame;
+import com.etti.classroomsbooking.model.TimeLapse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.Result;
 
@@ -42,7 +42,7 @@ import static com.etti.classroomsbooking.util.Constant.USER;
 import static com.etti.classroomsbooking.util.Utility.getFormattedTimeInterval;
 import static com.etti.classroomsbooking.util.Utility.getStringDateFromTimeMillis;
 
-public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
+public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private FirebaseAuth firebaseAuth;
     private DrawerLayout drawer;
@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == REQUEST_CODE_QR && scannedQRCode != -1) {
-                mReturningWithResult = true;
-            }
+        if (requestCode == REQUEST_CODE_QR && scannedQRCode != -1) {
+            mReturningWithResult = true;
         }
+    }
 
     @Override
     protected void onPostResume() {
@@ -93,14 +93,16 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            switch(id){
+            switch (id) {
                 case (R.id.nav_logout):
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    finish(); break;
+                    finish();
+                    break;
                 case (R.id.scan_qr):
                     Intent i = new Intent(this, ScanQRActivity.class);
-                    startActivityForResult(i, REQUEST_CODE_QR); break;
+                    startActivityForResult(i, REQUEST_CODE_QR);
+                    break;
                 case (R.id.view_calendar):
                     moveToFragment(new CalendarFragment());
             }
@@ -120,26 +122,26 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         this.classrooms = classrooms;
     }
 
-    public void buildEventsListView(ListView listView, Classroom classroom, long selectedDateInMillis){
-        ArrayList<TimeFrame> classroomIntervals = classroom.getIntervals();
-        if (classroomIntervals == null){
+    public void buildEventsListView(ListView listView, Classroom classroom, long selectedDateInMillis) {
+        ArrayList<TimeLapse> classroomIntervals = classroom.getIntervals();
+        if (classroomIntervals == null) {
             return;
         }
         classroom.sortIntervals();
         Map<String, String> eventsDetails = new LinkedHashMap<>();
-        for (TimeFrame interval : classroomIntervals){
+        for (TimeLapse interval : classroomIntervals) {
 
             if (getStringDateFromTimeMillis(selectedDateInMillis).equals(interval.getDate())) {
                 String timeInterval = getFormattedTimeInterval(interval);
                 eventsDetails.put(timeInterval, interval.getUserName());
             }
         }
-        List<Map<String,String>> listItems = new ArrayList<>();
+        List<Map<String, String>> listItems = new ArrayList<>();
         adapter = new SimpleAdapter(this, listItems, R.layout.event_item,
                 new String[]{TIME_INTERVAL, USER, "CHECKBOX"}, new int[]{R.id.textView1, R.id.textView2, R.id.eventCheckBox});
         Iterator iterator = eventsDetails.entrySet().iterator();
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
             Map<String, String> pair = new HashMap<>();
             pair.put(TIME_INTERVAL, entry.getKey());
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         listView.setAdapter(adapter);
     }
 
-    public void notifyAdapter(){
+    public void notifyAdapter() {
         adapter.notifyDataSetChanged();
     }
 
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         return super.onOptionsItemSelected(item);
     }
 
-    public void moveToFragment(Fragment fragment){
+    public void moveToFragment(Fragment fragment) {
         this.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, fragment, fragment.getTag())
                 .addToBackStack(fragment.getTag())
